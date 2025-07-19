@@ -1,6 +1,10 @@
 pipeline {
   agent { label 'test-label' }
 
+  tools {
+    maven 'Maven 3.9'
+  }
+
   environment {
     DEPLOY_USER = "ec2-user"
     DEPLOY_HOST = "18.237.114.137"
