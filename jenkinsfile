@@ -9,7 +9,7 @@ pipeline {
     DEPLOY_USER = "ec2-user"
     DEPLOY_HOST = "18.237.114.137"
     DEPLOY_PATH = "/var/lib/jenkins/webapps"
-    ARTIFACT_NAME = "demo.war"  // Replace with actual WAR name
+    ARTIFACT_NAME = "works-with-heroku-1.0.war"  // Replace with actual WAR name
   }
 
   stages {
