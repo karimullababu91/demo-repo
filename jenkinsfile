@@ -1,22 +1,39 @@
 pipeline {
-  agent any 
+  agent { label 'test-label' }
 
   environment {
     DEPLOY_USER = "ec2-user"
-    DEPLOY_HOST = "44.246.134.43"
+    DEPLOY_HOST = "18.237.114.137"
     DEPLOY_PATH = "/var/lib/jenkins/webapps"
-    ARTIFACT_NAME = "works-with-heroku-1.0.war"
+    ARTIFACT_NAME = "demo.war"  // Replace with actual WAR name
   }
+
   stages {
-    stage('checkout') {
+    stage('Checkout') {
       steps {
-      
+        git branch: 'main', url: 'https://github.com/karimullababu91/demo-repo.git'
       }
     }
 
+    stage('Test') {
+      steps {
+        sh 'mvn clean'
+      }
+    }
 
+    stage('Build') {
+      steps {
+        sh 'mvn install'
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        sh '''
+          scp target/${ARTIFACT_NAME} ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/
+          ssh ${DEPLOY_USER}@${DEPLOY_HOST} 'sudo systemctl restart tomcat9'
+        '''
+      }
+    }
   }
-
-
-
 }
